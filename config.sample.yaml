@@ -3,4 +3,4 @@ database:
     password: 'DATABASE_PASSWORD'
     host: 'DATABASE_HOST'
     database: 'DATABASE_NAME'
-token: '6263165538:AAGSbV8cAfL4Gxz08B_VVrxETMhzAez78wc'
+token: ''
