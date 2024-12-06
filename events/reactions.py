@@ -1,4 +1,6 @@
 from aiogram import types, Router
+
+from bot import bot
 from database.database import pg_con
 
 router = Router()
@@ -46,3 +48,14 @@ async def register_message_reaction(event: types.MessageReactionUpdated):
             emoji = reaction.model_dump()['emoji']
             if emoji in valid_emojis:
                 await update_reaction_count(conn, event.chat.id, event.message_id, -1)
+
+    reaction_count_message = await conn.fetchrow('SELECT reaction_count FROM message WHERE chat_id = $1 AND message_id = $2',
+                                              event.chat.id, event.message_id
+                                                 )
+
+    reaction_count_chat = await conn.fetchrow('SELECT min_reaction_count, channel_id FROM chat WHERE chat_id = $1',
+                                              event.chat.id
+                                              )
+
+    if reaction_count_message[0] >= reaction_count_chat[0]:
+        await bot.copy_message(message_id=event.message_id, from_chat_id=event.chat.id, chat_id=reaction_count_chat[1])
