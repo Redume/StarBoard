@@ -3,15 +3,13 @@ from aiogram import Bot, Dispatcher
 import asyncio
 import yaml
 
-from events import join_chat, reactions
+from bot import bot
+from routers import setup_routers
 
 config = yaml.safe_load(open('config.yaml'))
 
 dp = Dispatcher()
-bot = Bot(config['token'])
-
-dp.include_router(router=reactions.router)
-dp.include_router(router=join_chat.router)
+setup_routers(dp)
 
 
 if __name__ == '__main__':
