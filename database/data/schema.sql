@@ -8,7 +8,7 @@ CREATE TABLE message
 CREATE TABLE chat
 (
     chat_id            BIGINT NOT NULL,
-    channel_id         BIGINT,
+    channel_id         TEXT,
     min_reaction_count INT DEFAULT 5,
-    emoji_list         TEXT[] DEFAULT array['⭐']
+    emoji_list         TEXT[] DEFAULT array['⭐', '😁']
 );
