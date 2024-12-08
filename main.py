@@ -1,7 +1,7 @@
-from aiogram import Bot, Dispatcher
-
 import asyncio
+
 import yaml
+from aiogram import Dispatcher
 
 from bot import bot
 from routers import setup_routers
