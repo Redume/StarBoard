@@ -1,4 +1,5 @@
 from aiogram import types, Router
+from aiogram.exceptions import TelegramBadRequest
 
 from bot import bot
 from database.database import pg_con
@@ -57,5 +58,8 @@ async def register_message_reaction(event: types.MessageReactionUpdated):
                                               event.chat.id
                                               )
 
-    if reaction_count_message[0] >= reaction_count_chat[0]:
-        await bot.copy_message(message_id=event.message_id, from_chat_id=event.chat.id, chat_id=reaction_count_chat[1])
+    try:
+        if reaction_count_message[0] >= reaction_count_chat[0] and reaction_count_chat[1] is not None:
+            await bot.copy_message(message_id=event.message_id, from_chat_id=event.chat.id, chat_id=reaction_count_chat[1])
+    except TelegramBadRequest:
+        return
