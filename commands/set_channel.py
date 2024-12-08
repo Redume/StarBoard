@@ -3,12 +3,12 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from database.database import pg_con
+from filters.chat_type import ChatTypeFilter
 
 router = Router()
 
-@router.message(Command('set_channel'))
+@router.message(Command('set_channel'), ChatTypeFilter(chat_type=["group", "supergroup"]))
 async def set_channel(message: Message):
-    print(message)
     args = message.text.split()
 
     if len(args) < 2:

@@ -3,6 +3,7 @@ from aiogram.exceptions import TelegramBadRequest
 
 from bot import bot
 from database.database import pg_con
+from filters.chat_type import ChatTypeFilter
 
 router = Router()
 
@@ -25,11 +26,8 @@ async def update_reaction_count(conn, chat_id, message_id, delta):
         )
 
 
-@router.message_reaction()
+@router.message_reaction(ChatTypeFilter(chat_type=["group", "supergroup"]))
 async def register_message_reaction(event: types.MessageReactionUpdated):
-    if event.chat.type not in {'group', 'supergroup'}:
-        return
-
     conn = await pg_con()
 
     data_reaction = await conn.fetchval('SELECT emoji_list FROM chat WHERE chat_id = $1', event.chat.id)
